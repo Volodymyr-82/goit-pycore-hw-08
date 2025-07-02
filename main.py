@@ -1,4 +1,5 @@
 from birthday import AddressBook, Record
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -15,7 +16,7 @@ def input_error(func):
             return "Contact not found."
         
         except AttributeError:
-            return "NoneType' object has no attribute."
+            return "NoneType object has no attribute."
         
     return inner
 @input_error
@@ -39,7 +40,7 @@ def add_contact(args, book: AddressBook):
     
     if phone:
         record.add_phone(phone)
-    return message
+        return message
 
 @input_error
 def change_contact(args, book):
@@ -90,7 +91,7 @@ def birthdays(args, book):
 
 def main():
     book = AddressBook()
-    
+    book=AddressBook.load_data()
     while True:
         user_input = input("Enter a command: ")
         
@@ -101,6 +102,7 @@ def main():
             continue
 
         if command in ["close", "exit"]:
+            book.save_data()
             print("Good bye!")
             break
         elif command == "hello":

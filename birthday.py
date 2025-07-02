@@ -1,6 +1,7 @@
 from collections import UserDict
 import re
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta
+import pickle 
 
 class Field:
     def __init__(self, value):
@@ -76,6 +77,7 @@ class Record:
 
 
 class AddressBook(UserDict):
+    FILE = "addressbook.pkl"
     def add_record(self, record):
         self.data[record.name.value] = record
     
@@ -120,6 +122,18 @@ class AddressBook(UserDict):
                 continue
 
         return upcoming_birthdays
+
+
+    def save_data(book, filename="addressbook.pkl"):
+        with open(filename, "wb") as f:
+            pickle.dump(book, f)
+
+    def load_data(filename="addressbook.pkl"):
+        try:
+            with open(filename, "rb") as f:
+                return pickle.load(f)
+        except FileNotFoundError:
+            return AddressBook()
 
     
     
@@ -167,6 +181,7 @@ if __name__ == "__main__":
 
     # Видалення запису Jane
     book.delete("Jane")
+    book.save_data()
         
         
 
